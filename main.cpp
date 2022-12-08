@@ -51,9 +51,10 @@ mtrx _initialize_matrix_(const char* path, const char* mode)
     return obj;
 }
 
-mtrx _multi_matrix_(int *&A, int *&B, int *&C, int &size)
+mtrx _multi_matrix_(int *&A, int *&B, int *&C, int &size, int pr_num, int pr_rank)
 {
-    int proc_num = size / 2;
+    int proc_num = pr_num;
+    int proc_rank = pr_rank;
     int size_dupl = size;
     int index;
     double temp = 0;
@@ -225,10 +226,10 @@ int main(int argc, char* argv[])
     try
     {
         MPI_INIT(&argc, &argv);
-        //MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
-        //MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
+        MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
+        MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
         clock_t start_time = clock();
-        _multi_matrix_(first_mtrx.matrix, second_mtrx.matrix, res_matrix.matrix, res_matrix.column_size);//тут сам поставь & * - чо надо будет для передачи аргументов!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        _multi_matrix_(first_mtrx.matrix, second_mtrx.matrix, res_matrix.matrix, res_matrix.column_size, proc_count, proc_rank);//тут сам поставь & * - чо надо будет для передачи аргументов!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //
         //
         //
